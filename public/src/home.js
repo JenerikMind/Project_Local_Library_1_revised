@@ -17,33 +17,12 @@ function getMostCommonGenres(books) {
   let favorites = []
   
   bookGenres.forEach((genre) => {
-    if (favorites.length == 0 || favorites.find(f => f.name === genre) === undefined){
-      let obj = {}
-      obj["name"] = genre
-      obj["count"] = 1
-      
-      favorites.push(obj)
-    }else{
-      let obj = favorites.find(f => f.name === genre)
-      obj.count += 1
-    }
+    // helper method
+    favorites = createGenreCountObjArray(favorites, genre);
   })
   
   let newFavs = favorites.sort((a, b) => a.count > b.count ? -1 : 1)
   return newFavs.slice(0, 5)
-}
-
-function createObjForArray(arr, stringToCheck){
-  let obj = {};
-  let item = arr.find(item => item.name === stringToCheck)
-  if (arr.length === 0 || item === undefined){
-    obj["name"] = genre;
-    obj["count"] = 1;
-  }else{
-    item.count += 1;
-  }
-
-  return obj;
 }
 
 function getMostPopularBooks(books) {
@@ -78,6 +57,28 @@ function getMostPopularAuthors(books, authors) {
 
   return popAuths.sort((a, b) => a.count > b.count ? -1 : 1).slice(0,5)
 }
+
+
+
+// HELPER FUNCTION
+function createGenreCountObjArray(arr, stringToCheck){
+  let obj = {};
+  let newArr = [...arr];
+  let item = newArr.find(item => item.name === stringToCheck)
+
+  if (arr.length === 0 || item === undefined){
+    obj["name"] = stringToCheck;
+    obj["count"] = 1;
+    newArr.push(obj);
+  }else{
+    item.count += 1;
+  }
+
+  return newArr;
+}
+
+
+
 
 module.exports = {
   getTotalBooksCount,
